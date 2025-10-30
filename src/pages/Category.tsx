@@ -9,6 +9,7 @@ import {
 } from '../features/category/categorySlice';
 import type { CategoryDto } from '../features/category/categoryTypes';
 import { FaEdit, FaToggleOn, FaToggleOff, FaSearch } from 'react-icons/fa';
+import { toast, ToastContainer } from 'react-toastify';
 
 const initialForm: CategoryDto = {
   name: '',
@@ -41,11 +42,18 @@ const CategoryManagementPage = () => {
       ? updateCategory(form)
       : createCategory(form);
 
-    dispatch(action).then(() => {
-      dispatch(fetchCategories());
-      setForm(initialForm);
-      setEditMode(false);
-    });
+    dispatch(action)
+  .unwrap()
+  .then(() => {
+    dispatch(fetchCategories());
+    toast.success(editMode ? 'Kategori başarıyla güncellendi!' : 'Kategori başarıyla eklendi!');
+    setForm(initialForm);
+    setEditMode(false);
+  })
+  .catch((error) => {
+    toast.error('Bir hata oluştu. Lütfen tekrar deneyin.');
+    console.error('Hata:', error);
+  });
   };
 
   const handleEdit = (category: CategoryDto) => {
@@ -64,9 +72,17 @@ const CategoryManagementPage = () => {
       ? deleteCategory(category)
       : activateCategory(category);
 
-    dispatch(action).then(() => {
-      dispatch(fetchCategories());
-    });
+    dispatch(action)
+  .unwrap()
+  .then(() => {
+    dispatch(fetchCategories());
+    toast.success(
+      category.isActive ? 'Kategori pasif yapıldı!' : 'Kategori aktif hale getirildi!'
+    );
+  })
+  .catch(() => {
+    toast.error('Kategori durumu değiştirilemedi!');
+  });
   };
 
   const filteredList = list.filter((cat: CategoryDto) =>
@@ -337,8 +353,12 @@ const CategoryManagementPage = () => {
           </div>
         </div>
       </div>
+      <ToastContainer position="top-right" autoClose={3000} />
     </div>
+    
   );
+  
+
 };
 
 export default CategoryManagementPage;

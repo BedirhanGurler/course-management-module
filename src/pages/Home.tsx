@@ -52,9 +52,7 @@ const HomePage = () => {
           düzenleyebilir ve yönetebilirsiniz.
         </p>
 
-        {/* Kartlar */}
         <div className="row g-3 mt-2 justify-content-center" style={{ margin: '0 auto', maxWidth: '600px' }}>
-          {/* Dersler Kartı */}
           <div className="col-sm-6">
             <Link to="/course" className="text-decoration-none">
               <div
@@ -96,7 +94,6 @@ const HomePage = () => {
             </Link>
           </div>
 
-          {/* Kategoriler Kartı */}
           <div className="col-sm-6">
             <Link to="/category" className="text-decoration-none">
               <div
@@ -156,6 +153,7 @@ const HomePage = () => {
           }
         }
       `}</style>
+
     </div>
   );
 };
